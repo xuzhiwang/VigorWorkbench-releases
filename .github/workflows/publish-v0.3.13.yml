@@ -1,0 +1,47 @@
+name: Publish v0.3.13 feed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-v0.3.13.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.repository == 'xuzhiwang/VigorWorkbench-releases'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Assemble Setup from public parts and publish Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -fsSL -o part-00 https://litter.catbox.moe/6bsptk
+          curl -fsSL -o part-01 https://litter.catbox.moe/l1rjn7
+          curl -fsSL -o part-02 https://litter.catbox.moe/rihvke
+          curl -fsSL -o part-03 https://litter.catbox.moe/9w649h
+          cat part-00 part-01 part-02 part-03 > VigorWorkbench-Setup-0.3.13-x64.exe
+          rm -f part-00 part-01 part-02 part-03
+          echo "d0fcd87198b7216a7c02d3027a3109c3334e6c3f304faebdab2504a69b74a12e  VigorWorkbench-Setup-0.3.13-x64.exe" | sha256sum -c
+          test "$(stat -c%s VigorWorkbench-Setup-0.3.13-x64.exe)" -eq 158609352
+          curl -fsSL -o latest.yml https://litter.catbox.moe/lyrykp.yml
+          curl -fsSL -o VigorWorkbench-Setup-0.3.13-x64.exe.blockmap https://litter.catbox.moe/rypdbg.blockmap
+          echo "333c2f5f1011f870bf715ab21074ca4f3fb5179607ff4d0a1384115aee193889  VigorWorkbench-Setup-0.3.13-x64.exe.blockmap" | sha256sum -c
+          gh release create v0.3.13 \
+            --title v0.3.13 \
+            --notes "VigorWorkbench 0.3.13 Windows x64 Setup (in-app auto-update feed).
+
+Install VigorWorkbench-Setup-0.3.13-x64.exe. Clients read latest.yml and the .blockmap from this Release.
+
+- Version: 0.3.13
+- Setup sha256: d0fcd87198b7216a7c02d3027a3109c3334e6c3f304faebdab2504a69b74a12e
+- Size: 158609352 bytes" \
+            --latest \
+            latest.yml \
+            VigorWorkbench-Setup-0.3.13-x64.exe \
+            VigorWorkbench-Setup-0.3.13-x64.exe.blockmap
