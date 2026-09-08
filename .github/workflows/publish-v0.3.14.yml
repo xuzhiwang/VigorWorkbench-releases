@@ -15,22 +15,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - name: Publish GitHub Release from private assets
+      - name: Fetch pack artifacts and create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FEED_BASE: https://turns-swim-lexmark-millennium.trycloudflare.com
         run: |
           set -euo pipefail
-          gh release download v0.3.14 --repo xuzhiwang/VigorWorkbench \
-            --pattern 'VigorWorkbench-Setup-0.3.14-x64.exe' \
-            --pattern 'latest.yml' \
-            --pattern 'VigorWorkbench-Setup-0.3.14-x64.exe.blockmap' \
-            --dir .
+          curl -fL --retry 5 --retry-delay 2 -o latest.yml "$FEED_BASE/latest.yml"
+          curl -fL --retry 5 --retry-delay 2 -o VigorWorkbench-Setup-0.3.14-x64.exe.blockmap "$FEED_BASE/VigorWorkbench-Setup-0.3.14-x64.exe.blockmap"
+          curl -fL --retry 5 --retry-delay 2 -o VigorWorkbench-Setup-0.3.14-x64.exe "$FEED_BASE/VigorWorkbench-Setup-0.3.14-x64.exe"
           echo '92245decb31303faa49820ea5726110030c6829eaa45d4104b54067fab49857e  VigorWorkbench-Setup-0.3.14-x64.exe' | sha256sum -c
           test "$(stat -c%s VigorWorkbench-Setup-0.3.14-x64.exe)" -eq 158613063
+          echo 'cf4e5c20290ccf0d92dbe9df9ab8fa1a4f59e0b640a5eacd7defbda676b34209  VigorWorkbench-Setup-0.3.14-x64.exe.blockmap' | sha256sum -c
           gh release create v0.3.14 \
             --title v0.3.14 \
-            --notes "VigorWorkbench 0.3.14 Windows x64 NSIS Setup (v0.18 work-detail links).\n\nSetup sha256: 92245decb31303faa49820ea5726110030c6829eaa45d4104b54067fab49857e\nSize: 158613063 bytes" \
+            --notes "VigorWorkbench 0.3.14 Windows x64 NSIS Setup (v0.18 work-detail links).
+
+Public updater feed: latest.yml + Setup + blockmap.
+Setup sha256: 92245decb31303faa49820ea5726110030c6829eaa45d4104b54067fab49857e
+Size: 158613063 bytes" \
             --latest \
             latest.yml \
             VigorWorkbench-Setup-0.3.14-x64.exe \
