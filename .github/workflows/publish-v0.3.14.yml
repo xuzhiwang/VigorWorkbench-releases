@@ -1,6 +1,6 @@
 name: Publish v0.3.14 feed
 
-on:
+"on":
   push:
     branches: [main]
     paths:
@@ -27,14 +27,4 @@ jobs:
           echo '92245decb31303faa49820ea5726110030c6829eaa45d4104b54067fab49857e  VigorWorkbench-Setup-0.3.14-x64.exe' | sha256sum -c
           test "$(stat -c%s VigorWorkbench-Setup-0.3.14-x64.exe)" -eq 158613063
           echo 'cf4e5c20290ccf0d92dbe9df9ab8fa1a4f59e0b640a5eacd7defbda676b34209  VigorWorkbench-Setup-0.3.14-x64.exe.blockmap' | sha256sum -c
-          gh release create v0.3.14 \
-            --title v0.3.14 \
-            --notes "VigorWorkbench 0.3.14 Windows x64 NSIS Setup (v0.18 work-detail links).
-
-Public updater feed: latest.yml + Setup + blockmap.
-Setup sha256: 92245decb31303faa49820ea5726110030c6829eaa45d4104b54067fab49857e
-Size: 158613063 bytes" \
-            --latest \
-            latest.yml \
-            VigorWorkbench-Setup-0.3.14-x64.exe \
-            VigorWorkbench-Setup-0.3.14-x64.exe.blockmap
+          gh release create v0.3.14 --title v0.3.14 --notes 'VigorWorkbench 0.3.14 Windows x64 NSIS Setup (v0.18 work-detail links). Setup sha256 92245decb31303faa49820ea5726110030c6829eaa45d4104b54067fab49857e size 158613063' --latest latest.yml VigorWorkbench-Setup-0.3.14-x64.exe VigorWorkbench-Setup-0.3.14-x64.exe.blockmap
