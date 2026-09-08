@@ -1,0 +1,37 @@
+name: Publish v0.3.14 feed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-v0.3.14.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish GitHub Release from private assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh release download v0.3.14 --repo xuzhiwang/VigorWorkbench \
+            --pattern 'VigorWorkbench-Setup-0.3.14-x64.exe' \
+            --pattern 'latest.yml' \
+            --pattern 'VigorWorkbench-Setup-0.3.14-x64.exe.blockmap' \
+            --dir .
+          echo '92245decb31303faa49820ea5726110030c6829eaa45d4104b54067fab49857e  VigorWorkbench-Setup-0.3.14-x64.exe' | sha256sum -c
+          test "$(stat -c%s VigorWorkbench-Setup-0.3.14-x64.exe)" -eq 158613063
+          gh release create v0.3.14 \
+            --title v0.3.14 \
+            --notes "VigorWorkbench 0.3.14 Windows x64 NSIS Setup (v0.18 work-detail links).\n\nSetup sha256: 92245decb31303faa49820ea5726110030c6829eaa45d4104b54067fab49857e\nSize: 158613063 bytes" \
+            --latest \
+            latest.yml \
+            VigorWorkbench-Setup-0.3.14-x64.exe \
+            VigorWorkbench-Setup-0.3.14-x64.exe.blockmap
