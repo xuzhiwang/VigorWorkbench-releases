@@ -1,8 +1,8 @@
-version: 0.3.14
+version: 0.3.17
 files:
-  - url: VigorWorkbench-Setup-0.3.14-x64.exe
-    sha512: 5nzpCXhPtSv2UfTkk9BmtfiM/lO9r3mei+CxmDhiOFS/SUlHaBwtpnCkbnoL/r0F/ucFda7zdZh8GvyhAUQxvg==
-    size: 158613063
-path: VigorWorkbench-Setup-0.3.14-x64.exe
-sha512: 5nzpCXhPtSv2UfTkk9BmtfiM/lO9r3mei+CxmDhiOFS/SUlHaBwtpnCkbnoL/r0F/ucFda7zdZh8GvyhAUQxvg==
-releaseDate: '2026-09-08T08:42:05.966Z'
+  - url: VigorWorkbench-Setup-0.3.17-x64.exe
+    sha512: DZiREcrWq8+ZI1tBTVU7IeBvKHHovhTVpvAGiNCMo1tT/TgWrs2pYAvJHiRebxD+1CO4ZQmrVjP7aexv0WtGBQ==
+    size: 158433772
+path: VigorWorkbench-Setup-0.3.17-x64.exe
+sha512: DZiREcrWq8+ZI1tBTVU7IeBvKHHovhTVpvAGiNCMo1tT/TgWrs2pYAvJHiRebxD+1CO4ZQmrVjP7aexv0WtGBQ==
+releaseDate: '2026-09-10T06:39:40.463Z'
