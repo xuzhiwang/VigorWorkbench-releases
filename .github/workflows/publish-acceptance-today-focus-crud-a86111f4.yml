@@ -20,11 +20,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: xuzhiwang/VigorWorkbench-releases
           FEED_BASE: https://drew-bargain-about-donation.trycloudflare.com
+          FEED_HOST: drew-bargain-about-donation.trycloudflare.com
         run: |
           set -euo pipefail
-          curl -fL --retry 5 --retry-delay 2 -o vwb.exe "$FEED_BASE/vwb.exe"
-          curl -fL --retry 5 --retry-delay 2 -o VigorWorkbenchCore.exe "$FEED_BASE/VigorWorkbenchCore.exe"
-          curl -fL --retry 5 --retry-delay 2 -o better_sqlite3.node "$FEED_BASE/better_sqlite3.node"
+          RESOLVE=(--ipv4 --resolve "${FEED_HOST}:443:104.16.231.132" --resolve "${FEED_HOST}:443:104.16.230.132")
+          curl -fL --retry 5 --retry-delay 2 "${RESOLVE[@]}" -o vwb.exe "$FEED_BASE/vwb.exe"
+          curl -fL --retry 5 --retry-delay 2 "${RESOLVE[@]}" -o VigorWorkbenchCore.exe "$FEED_BASE/VigorWorkbenchCore.exe"
+          curl -fL --retry 5 --retry-delay 2 "${RESOLVE[@]}" -o better_sqlite3.node "$FEED_BASE/better_sqlite3.node"
           echo '82de72996f220428817e8648dff80654dd4ad92bfcfe98e969bd5df6b8320e77  vwb.exe' | sha256sum -c
           echo 'fe271f4f8792347b80ee7f78da92a4c4fa1f460b598ad258b46eb0faaea4e404  VigorWorkbenchCore.exe' | sha256sum -c
           echo 'e21e5efd71fba66578e95b62554d9028064a80dafd7221bf8a8ef155de8d240a  better_sqlite3.node' | sha256sum -c
