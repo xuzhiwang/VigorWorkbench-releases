@@ -1,0 +1,40 @@
+GOAL-TODAY-FOCUS-CRUD-CLI shared-box review sources
+NOT PO Setup. Do not replace latest.yml. Do not merge to main.
+
+TIP_SHA=a86111f4af98925dd011083bac780f786c769abf
+BASE_SHA=79f29df138e8b81137971cf69d144c2d3be76b87
+PR=https://github.com/xuzhiwang/VigorWorkbench/pull/102
+BRANCH=feat/today-focus-crud-cli
+
+FILE_COUNT=22
+ZIP=pr102-review-sources.zip
+ZIP_SHA256=95389c0d4dbe6e8dcdd01273080043bfa1488a6046b6e9a64000b8ea2e8d846e
+ZIP_BYTES=125015
+
+TARBALL=tip-a86111f4.tar.gz
+TARBALL_SHA256=f0b5589a9102fcaf9947730e4b42aac1b2cae1ee1a1a9c98aa615019fa5866c4
+TARBALL_BYTES=688290
+
+Changed files (relative paths):
+apps/cli/src/index.test.ts
+apps/cli/src/index.ts
+apps/core-host/src/http-server.ts
+apps/core-host/src/query-router.ts
+apps/core-host/src/work-domain.test.ts
+apps/desktop/src/main/widget-page-copy.test.ts
+apps/desktop/src/main/widget-page-script.ts
+apps/desktop/src/widget/widget.js
+packages/contracts/src/api.ts
+packages/contracts/src/cli.ts
+packages/contracts/src/commands.ts
+packages/contracts/src/contracts.test.ts
+packages/contracts/src/open-item.ts
+packages/contracts/src/queries.ts
+packages/core/src/open-item.test.ts
+packages/core/src/open-item.ts
+packages/core/src/query.ts
+packages/core/src/work-domain.ts
+packages/ui/src/labels.ts
+packages/ui/src/ui.test.ts
+scripts/verify-skills.mjs
+skills/vigor-workbench/SKILL.md
