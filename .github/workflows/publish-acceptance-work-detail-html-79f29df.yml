@@ -1,0 +1,34 @@
+name: Publish acceptance-work-detail-html-79f29df prerelease
+
+"on":
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-acceptance-work-detail-html-79f29df.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Fetch artifacts and create prerelease (do not mark latest)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: xuzhiwang/VigorWorkbench-releases
+          FEED_BASE: https://orchestra-simpsons-night-beverages.trycloudflare.com
+        run: |
+          set -euo pipefail
+          curl -fL --retry 5 --retry-delay 2 -o vwb.exe "$FEED_BASE/vwb.exe"
+          curl -fL --retry 5 --retry-delay 2 -o VigorWorkbenchCore.exe "$FEED_BASE/VigorWorkbenchCore.exe"
+          curl -fL --retry 5 --retry-delay 2 -o better_sqlite3.node "$FEED_BASE/better_sqlite3.node"
+          echo 'b53f45d711b2a97bbcc1363bef71b7f123bb8a1183debb84007e4dc103cd903d  vwb.exe' | sha256sum -c
+          echo '2e00b51d430a0d4e546bdd5dcc1e1b3a02532733db5aa1e65f6d201ce1eb944c  VigorWorkbenchCore.exe' | sha256sum -c
+          echo 'e21e5efd71fba66578e95b62554d9028064a80dafd7221bf8a8ef155de8d240a  better_sqlite3.node' | sha256sum -c
+          test "$(stat -c%s vwb.exe)" -eq 85864960
+          test "$(stat -c%s VigorWorkbenchCore.exe)" -eq 85969920
+          test "$(stat -c%s better_sqlite3.node)" -eq 1989632
+          gh release create acceptance-work-detail-html-79f29df --repo xuzhiwang/VigorWorkbench-releases --title "ACCEPTANCE ONLY - work-detail-html 79f29df (NOT PO Setup)" --prerelease --notes "ACCEPTANCE ONLY for Sentinel Wine black-box; NOT PO Setup; tip 79f29df; do not use as updater feed (do NOT replace latest.yml). Tip: 79f29df138e8b81137971cf69d144c2d3be76b87. Branch: feat/work-detail-html-v1. PR: https://github.com/xuzhiwang/VigorWorkbench/pull/100. This prerelease is not latest and does not replace latest.yml / Setup / blockmap for 0.3.18. sha256 vwb.exe=b53f45d711b2a97bbcc1363bef71b7f123bb8a1183debb84007e4dc103cd903d VigorWorkbenchCore.exe=2e00b51d430a0d4e546bdd5dcc1e1b3a02532733db5aa1e65f6d201ce1eb944c better_sqlite3.node=e21e5efd71fba66578e95b62554d9028064a80dafd7221bf8a8ef155de8d240a" vwb.exe VigorWorkbenchCore.exe better_sqlite3.node
