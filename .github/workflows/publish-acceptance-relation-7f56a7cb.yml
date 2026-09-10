@@ -31,21 +31,4 @@ jobs:
           test "$(stat -c%s vwb.exe)" -eq 85852160
           test "$(stat -c%s VigorWorkbenchCore.exe)" -eq 85955072
           test "$(stat -c%s better_sqlite3.node)" -eq 1989632
-          gh release create acceptance-relation-7f56a7cb \
-            --repo xuzhiwang/VigorWorkbench-releases \
-            --title "ACCEPTANCE ONLY — relation extract 7f56a7cb (NOT PO Setup)" \
-            --prerelease \
-            --notes "ACCEPTANCE ONLY for Sentinel Wine black-box; NOT PO Setup; tip 7f56a7cb; do not use as updater feed (do NOT replace latest.yml).
-
-Tip: 7f56a7cb5e937e4ea5f582c84194afbe8ea49c6d
-Branch: cursor/fix-relation-extract-dedup-verify-0513
-PR: https://github.com/xuzhiwang/VigorWorkbench/pull/98
-This prerelease is not latest and does not replace latest.yml / Setup / blockmap for 0.3.17.
-
-sha256:
-- vwb.exe f36424852339f578b3e76be097a406f52f3d38b1c56d5bdd47d6b044503ee6fc
-- VigorWorkbenchCore.exe e451459f4254368cdc926b797f78b06c54d0b1892947096d32b6a802df1d12f8
-- better_sqlite3.node e21e5efd71fba66578e95b62554d9028064a80dafd7221bf8a8ef155de8d240a" \
-            vwb.exe \
-            VigorWorkbenchCore.exe \
-            better_sqlite3.node
+          gh release create acceptance-relation-7f56a7cb --repo xuzhiwang/VigorWorkbench-releases --title "ACCEPTANCE ONLY - relation extract 7f56a7cb (NOT PO Setup)" --prerelease --notes "ACCEPTANCE ONLY for Sentinel Wine black-box; NOT PO Setup; tip 7f56a7cb; do not use as updater feed (do NOT replace latest.yml). Tip: 7f56a7cb5e937e4ea5f582c84194afbe8ea49c6d. Branch: cursor/fix-relation-extract-dedup-verify-0513. PR: https://github.com/xuzhiwang/VigorWorkbench/pull/98. This prerelease is not latest and does not replace latest.yml / Setup / blockmap for 0.3.17. sha256 vwb.exe=f36424852339f578b3e76be097a406f52f3d38b1c56d5bdd47d6b044503ee6fc VigorWorkbenchCore.exe=e451459f4254368cdc926b797f78b06c54d0b1892947096d32b6a802df1d12f8 better_sqlite3.node=e21e5efd71fba66578e95b62554d9028064a80dafd7221bf8a8ef155de8d240a" vwb.exe VigorWorkbenchCore.exe better_sqlite3.node
