@@ -1,0 +1,38 @@
+name: Publish v0.3.23 feed
+
+"on":
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-v0.3.23.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Fetch pack artifacts and create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FEED_BASE: https://rubber-implement-network-teeth.trycloudflare.com
+        run: |
+          set -euo pipefail
+          curl -fL --retry 8 --retry-delay 2 -o latest.yml "$FEED_BASE/latest.yml"
+          curl -fL --retry 8 --retry-delay 2 -o VigorWorkbench-Setup-0.3.23-x64.exe.blockmap "$FEED_BASE/VigorWorkbench-Setup-0.3.23-x64.exe.blockmap"
+          curl -fL --retry 8 --retry-delay 2 -o VigorWorkbench-Setup-0.3.23-x64.exe "$FEED_BASE/VigorWorkbench-Setup-0.3.23-x64.exe"
+          echo 'baa52d9e9e562966a7cb50f37ca496894e0fee9de4953bc0f2b72914e356a93a  VigorWorkbench-Setup-0.3.23-x64.exe' | sha256sum -c
+          test "$(stat -c%s VigorWorkbench-Setup-0.3.23-x64.exe)" -eq 158512052
+          echo '60154bab9c6e9acc1d5fca657084bddaf83683c278cf5c53152623296ae66a21  VigorWorkbench-Setup-0.3.23-x64.exe.blockmap' | sha256sum -c
+          echo '7f91082527710cc1f0787971383eeca96b6b4d3eed73ff895be8647789bbeab1  latest.yml' | sha256sum -c
+          gh release create v0.3.23 \
+            --repo xuzhiwang/VigorWorkbench-releases \
+            --title v0.3.23 \
+            --notes 'VigorWorkbench 0.3.23 Windows x64 NSIS Setup (generic today.tree stack on 81a157ea + lockstep merge 89d2c194). Setup sha256 baa52d9e9e562966a7cb50f37ca496894e0fee9de4953bc0f2b72914e356a93a size 158512052. 0.3.22 assets remain intact.' \
+            --latest \
+            latest.yml \
+            VigorWorkbench-Setup-0.3.23-x64.exe \
+            VigorWorkbench-Setup-0.3.23-x64.exe.blockmap
