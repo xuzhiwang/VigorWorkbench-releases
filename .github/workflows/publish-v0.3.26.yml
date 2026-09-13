@@ -1,0 +1,40 @@
+name: Publish v0.3.26 feed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-v0.3.26.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Fetch pack artifacts and create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FEED_BASE: https://oakland-defend-cost-crest.trycloudflare.com
+        run: |
+          set -euo pipefail
+          curl -fL --retry 8 --retry-delay 2 -o latest.yml "$FEED_BASE/latest.yml"
+          curl -fL --retry 8 --retry-delay 2 -o VigorWorkbench-Setup-0.3.26-x64.exe.blockmap \
+            "$FEED_BASE/VigorWorkbench-Setup-0.3.26-x64.exe.blockmap"
+          curl -fL --retry 8 --retry-delay 2 -o VigorWorkbench-Setup-0.3.26-x64.exe \
+            "$FEED_BASE/VigorWorkbench-Setup-0.3.26-x64.exe"
+          echo '9997d36f5a3d5584104feba5d3eded2cf33296320d62939057147d19ddc60b56  VigorWorkbench-Setup-0.3.26-x64.exe' | sha256sum -c
+          test "$(stat -c%s VigorWorkbench-Setup-0.3.26-x64.exe)" -eq 158563174
+          echo '0a5b268c0741043749e1a98d3334bc24e12c6810d61c6433091dfb98d1ddbd07  VigorWorkbench-Setup-0.3.26-x64.exe.blockmap' | sha256sum -c
+          echo '4d217fc04fad6403af0ea96dacf88ed43f0305ef6df3472cfd136d995c81031d  latest.yml' | sha256sum -c
+          gh release create v0.3.26 \
+            --repo xuzhiwang/VigorWorkbench-releases \
+            --title v0.3.26 \
+            --notes 'VigorWorkbench 0.3.26 Windows x64 NSIS Setup (full HTML report on 8a1ce8ea + lockstep merge 02f509b). Setup sha256 9997d36f5a3d5584104feba5d3eded2cf33296320d62939057147d19ddc60b56 size 158563174. 0.3.25 assets remain intact.' \
+            --latest \
+            latest.yml \
+            VigorWorkbench-Setup-0.3.26-x64.exe \
+            VigorWorkbench-Setup-0.3.26-x64.exe.blockmap
